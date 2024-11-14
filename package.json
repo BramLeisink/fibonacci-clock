@@ -19,6 +19,7 @@
 		"autoprefixer": "^10.4.20",
 		"bits-ui": "1.0.0-next.56",
 		"clsx": "^2.1.1",
+		"lucide-svelte": "^0.456.0",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.5",
@@ -34,7 +35,6 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
-		"lucide-svelte": "^0.456.0",
 		"mode-watcher": "^0.4.1"
 	}
 }

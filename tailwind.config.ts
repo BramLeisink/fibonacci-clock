@@ -30,6 +30,9 @@ const config: Config = {
 		// Row span classes
 		{
 			pattern: /row-span-[1-7]/
+		},
+		{
+			pattern: /(bg|text|border|from|to|via)-(.*)/ // Safelists all colors for background, text, border, gradient from, to, and via colors.
 		}
 	],
 	theme: {
