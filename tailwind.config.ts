@@ -5,36 +5,7 @@ import tailwindcssAnimate from 'tailwindcss-animate';
 const config: Config = {
 	darkMode: ['class'],
 	content: ['./src/**/*.{html,js,svelte,ts}'],
-	safelist: [
-		'dark',
-		// Col start classes
-		{
-			pattern: /col-start-[1-7]/
-		},
-		// Col end classes
-		{
-			pattern: /col-end-[1-7]/
-		},
-		// Row start classes
-		{
-			pattern: /row-start-[1-7]/
-		},
-		// Row end classes
-		{
-			pattern: /row-end-[1-7]/
-		},
-		// Col span classes
-		{
-			pattern: /col-span-[1-7]/
-		},
-		// Row span classes
-		{
-			pattern: /row-span-[1-7]/
-		},
-		{
-			pattern: /(bg|text|border|from|to|via)-(.*)/ // Safelists all colors for background, text, border, gradient from, to, and via colors.
-		}
-	],
+	safelist: ['dark'],
 	theme: {
 		container: {
 			center: true,
