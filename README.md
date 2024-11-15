@@ -2,7 +2,7 @@
 
 Dit project is een interactieve **Fibonacci-klok** die de tijd op een unieke manier weergeeft. De klok gebruikt gekleurde blokken die gebaseerd zijn op de **Fibonacci-reeks** om uren en minuten weer te geven.
 
-![Screenshot van de Fibonacci Klok](/screenshot.png)
+![Screenshot van de Fibonacci Klok](/static/screenshot.png)
 
 ---
 
