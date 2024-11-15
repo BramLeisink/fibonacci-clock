@@ -1,38 +1,35 @@
-# sv
+# Fibonacci Klok 📟
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Dit project is een interactieve **Fibonacci-klok** die de tijd op een unieke manier weergeeft. De klok gebruikt gekleurde blokken die gebaseerd zijn op de **Fibonacci-reeks** om uren en minuten weer te geven.
 
-## Creating a project
+![Screenshot van de Fibonacci Klok](/screenshot.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```bash
-# create a new project in the current directory
-npx sv create
+## 🚀 Functionaliteiten
 
-# create a new project in my-app
-npx sv create my-app
-```
+- **Thema's:** Kies uit verschillende kleurthema's.
+- **Vormen:** Pas de blokken aan naar **rond**, **vierkant** of **cirkelvormig**.
+- **Responsief:** Werkt op zowel desktop als mobiel.
+- **Dynamische Animaties:** Blokken veranderen soepel om de tijd bij te werken.
 
-## Developing
+---
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## 📚 Hoe werkt het?
 
-```bash
-npm run dev
+De klok toont de tijd met blokken die waarden uit de Fibonacci-reeks (**1, 1, 2, 3, 5**) gebruiken. Elke kleur representeert een onderdeel van de tijd:
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- **Uren**: Rode blokken
+- **Minuten**: Groene blokken
+- **Combinatie**: Blauwe blokken
 
-## Building
+Tel de blokken bij elkaar op om de huidige tijd te berekenen. (Deze kleuren zijn aanpasbaar.)
 
-To create a production version of your app:
+---
 
-```bash
-npm run build
-```
+## 🛠️ Installatie
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1. **Clone de repository**:
+   ```bash
+   git clone https://github.com/BramLeisink/fibonacci-clock.git
+   cd fibonacci-clock
