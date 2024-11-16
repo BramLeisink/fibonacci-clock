@@ -42,6 +42,18 @@
 	let blocks = $state([]) as Blocks;
 
 	onMount(() => {
+		const savedColorTheme = localStorage.getItem('colorTheme');
+		const savedShapeTheme = localStorage.getItem('shapeTheme');
+
+		if (savedColorTheme && savedColorTheme in themes) {
+			colorTheme = savedColorTheme as keyof typeof themes;
+		}
+
+		if (savedShapeTheme && ['circle', 'rounded', 'square'].includes(savedShapeTheme)) {
+			shapeTheme = savedShapeTheme as 'circle' | 'rounded' | 'square';
+		}
+
+		// Initialize blocks as before
 		blocks = [
 			{ size: 5, value: 5, pos: [4, 1] },
 			{ size: 3, value: 3, pos: [1, 3] },
@@ -112,6 +124,11 @@
 			time = new Date();
 		}, 1000);
 		return () => clearInterval(interval);
+	});
+
+	$effect(() => {
+		localStorage.setItem('colorTheme', colorTheme);
+		localStorage.setItem('shapeTheme', shapeTheme);
 	});
 
 	function toggleFullscreen() {
