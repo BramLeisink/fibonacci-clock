@@ -13,33 +13,18 @@
 	let time = $state(new Date());
 	let showLegend = $state(false);
 	let isFullscreen = $state(false);
-	let colorTheme: keyof typeof themes = $state('default'); // Define colorTheme variable with a default colorTheme
-	let shapeTheme: 'circle' | 'rounded' | 'square' = $state('rounded'); // Define colorTheme variable with a default colorTheme
+	let colorTheme: keyof typeof themes = $state('default');
+	let shapeTheme: 'circle' | 'rounded' | 'square' = $state('rounded');
 
 	const themes: Themes = {
-		default: {
-			hour: '#ef4444',
-			minute: '#22c55e',
-			both: '#3b82f6'
-		},
-		theme2: {
-			hour: '#f97316',
-			minute: '#eab308',
-			both: '#a855f7'
-		},
-		theme3: {
-			hour: '#ec4899',
-			minute: '#14b8a6',
-			both: '#6366f1'
-		},
-		theme4: {
-			hour: '#06b6d4',
-			minute: '#84cc16',
-			both: '#ec4899'
-		}
+		default: { hour: '#ef4444', minute: '#22c55e', both: '#3b82f6' },
+		theme2: { hour: '#f97316', minute: '#eab308', both: '#a855f7' },
+		theme3: { hour: '#ec4899', minute: '#14b8a6', both: '#6366f1' },
+		theme4: { hour: '#06b6d4', minute: '#84cc16', both: '#ec4899' }
 	};
 
 	let blocks = $state([]) as Blocks;
+	let gridClicked = $state(false); // This will trigger the rerender of blocks
 
 	onMount(() => {
 		const savedColorTheme = localStorage.getItem('colorTheme');
@@ -53,7 +38,6 @@
 			shapeTheme = savedShapeTheme as 'circle' | 'rounded' | 'square';
 		}
 
-		// Initialize blocks as before
 		blocks = [
 			{ size: 5, value: 5, pos: [4, 1] },
 			{ size: 3, value: 3, pos: [1, 3] },
@@ -63,13 +47,11 @@
 		];
 	});
 
+	// Function to handle the block colors
 	function getBlockColors() {
-		const colors = themes[colorTheme]; // Select colors based on the current colorTheme
-		let hours: number;
-		let minutes: number;
-
-		hours = time.getHours() % 12 || 12;
-		minutes = Math.floor(time.getMinutes() / 5);
+		const colors = themes[colorTheme];
+		let hours = time.getHours() % 12 || 12;
+		let minutes = Math.floor(time.getMinutes() / 5);
 
 		let bestSolution: { colors: string[]; unusedHours: number; unusedMinutes: number } | null =
 			null;
@@ -95,6 +77,7 @@
 			};
 		}
 
+		// Loop to find the best configuration for the blocks
 		for (let i = 0; i < Math.pow(2, blocks.length); i++) {
 			for (let j = 0; j < Math.pow(2, blocks.length); j++) {
 				const hourConfig = Array.from({ length: blocks.length }, (_, idx) => !!(i & (1 << idx)));
@@ -119,6 +102,7 @@
 		return bestSolution?.colors || blocks.map(() => 'dark:bg-gray-600 bg-gray-200');
 	}
 
+	// Update time every second
 	$effect(() => {
 		const interval = setInterval(() => {
 			time = new Date();
@@ -139,6 +123,11 @@
 			document.exitFullscreen();
 			isFullscreen = false;
 		}
+	}
+
+	// Handle the grid click event to trigger rerender
+	function handleGridClick() {
+		gridClicked = !gridClicked; // Toggle the value to force a rerender
 	}
 </script>
 
@@ -169,19 +158,23 @@
 					</Button>
 				</div>
 			</div>
-			<div
+			<!-- Grid container, with the click event to trigger rerender -->
+			<button
 				class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+				onclick={handleGridClick}
 			>
-				{#each blocks as block, i}
-					<Block
-						{block}
-						color={getBlockColors()[i]}
-						index={i}
-						style={shapeTheme}
-						delay={(blocks.length - i) * 100 + 100}
-					/>
-				{/each}
-			</div>
+				{#key gridClicked}
+					{#each blocks as block, i}
+						<Block
+							{block}
+							color={getBlockColors()[i]}
+							index={i}
+							style={shapeTheme}
+							delay={(blocks.length - i) * 100 + 100}
+						/>
+					{/each}
+				{/key}
+			</button>
 			{#if showLegend}
 				<Legend {colorTheme} {themes} />
 			{/if}
