@@ -1,6 +1,11 @@
 <script lang="ts">
-	let { block, color, index, style }: { block: any; color: string; index: number; style: string } =
-		$props();
+	let {
+		block,
+		color,
+		index,
+		style,
+		delay = 0
+	}: { block: any; color: string; index: number; style: string; delay: number } = $props();
 
 	const rotationOffset = 2;
 
@@ -42,8 +47,8 @@
 </script>
 
 <div
-	class={`group flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
-	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}`}
+	class={`group motion-preset-pop flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
+	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
 >
 	<p
 		class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
@@ -53,24 +58,4 @@
 </div>
 
 <style>
-	.top-left {
-		border-top-left-radius: 100%;
-		border-bottom-right-radius: 0.75rem;
-		padding: 20% 0 0 20%;
-	}
-	.top-right {
-		border-top-right-radius: 100%;
-		border-bottom-left-radius: 0.75rem;
-		padding: 20% 0 0 20%;
-	}
-	.bottom-right {
-		border-bottom-right-radius: 100%;
-		border-top-left-radius: 0.75rem;
-		padding: 20% 0 0 20%;
-	}
-	.bottom-left {
-		border-bottom-left-radius: 100%;
-		border-top-right-radius: 0.75rem;
-		padding: 20% 0 0 20%;
-	}
 </style>

@@ -5,7 +5,9 @@
 	import SettingsModal from '$lib/components/SettingsModal.svelte';
 	import Block from '$lib/components/Block.svelte';
 
-	import type { Themes } from '$lib/types.ts';
+	import { onMount } from 'svelte';
+
+	import type { Themes, Blocks } from '$lib/types.ts';
 	import { Info, Maximize2, Minimize2 } from 'lucide-svelte';
 
 	let time = $state(new Date());
@@ -37,14 +39,17 @@
 		}
 	};
 
-	// Fibonacci sequence for the clock: 1, 1, 2, 3, 5
-	const blocks = [
-		{ size: 5, value: 5, pos: [4, 1] },
-		{ size: 3, value: 3, pos: [1, 3] },
-		{ size: 2, value: 2, pos: [1, 1] },
-		{ size: 1, value: 1, pos: [3, 1] },
-		{ size: 1, value: 1, pos: [3, 2] }
-	];
+	let blocks = $state([]) as Blocks;
+
+	onMount(() => {
+		blocks = [
+			{ size: 5, value: 5, pos: [4, 1] },
+			{ size: 3, value: 3, pos: [1, 3] },
+			{ size: 2, value: 2, pos: [1, 1] },
+			{ size: 1, value: 1, pos: [3, 1] },
+			{ size: 1, value: 1, pos: [3, 2] }
+		];
+	});
 
 	function getBlockColors() {
 		const colors = themes[colorTheme]; // Select colors based on the current colorTheme
@@ -148,10 +153,16 @@
 				</div>
 			</div>
 			<div
-				class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'}`}
+				class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
 			>
 				{#each blocks as block, i}
-					<Block {block} color={getBlockColors()[i]} index={i} style={shapeTheme} />
+					<Block
+						{block}
+						color={getBlockColors()[i]}
+						index={i}
+						style={shapeTheme}
+						delay={(blocks.length - i) * 100 + 100}
+					/>
 				{/each}
 			</div>
 			{#if showLegend}
