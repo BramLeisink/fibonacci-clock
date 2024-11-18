@@ -203,14 +203,14 @@
 				</div>
 			</div>
 			<!-- Grid container, with the click event to trigger rerender -->
-			{#key gridClicked}
+			<!-- {#key gridClicked} -->
 				<button
 					class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
 					onclick={handleGridClick}
 				>
 					{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
 						<Block
-							{block}
+					 		{block}
 							color={getBlockColors()[i]}
 							index={i}
 							style={shapeTheme}
@@ -235,7 +235,7 @@
 						</div>
 					{/if}
 				</button>
-			{/key}
+			<!-- {/key} -->
 			{#if showLegend}
 				<Legend {colorTheme} {themes} />
 			{/if}
