@@ -4,8 +4,18 @@
 		color,
 		index,
 		style,
-		delay = 0
-	}: { block: any; color: string; index: number; style: string; delay: number } = $props();
+		delay = 0,
+		glow,
+		animate
+	}: {
+		block: any;
+		color: string | null;
+		index: number;
+		style: string;
+		delay: number;
+		glow: boolean;
+		animate: boolean;
+	} = $props();
 
 	const rotationOffset = 2;
 
@@ -13,7 +23,6 @@
 	function getBorderRadius(index: number, offset: number): string {
 		switch (style) {
 			case 'circle': {
-				// Circle style: rounded corners based on index
 				const corner = (index + offset) % 4;
 				switch (corner) {
 					case 0:
@@ -30,12 +39,10 @@
 			}
 
 			case 'rounded': {
-				// Rounded style: consistent rounded corners
 				return 'border-radius: 0.75rem;';
 			}
 
 			case 'square': {
-				// Square style: no rounded corners
 				return 'border-radius: 0;';
 			}
 
@@ -46,16 +53,24 @@
 	}
 </script>
 
+{#if false}
+	<div class="motion-preset-pop"></div>
+{/if}
+
 <div
-	class={`group motion-preset-pop flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
+	class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
 	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
 >
+	<!-- Glow Layer -->
+	<div
+		class="absolute inset-0 -z-10 transition-all duration-300"
+		style={`background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
+	></div>
+
+	<!-- Square Content -->
 	<p
 		class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
 	>
-		{block.value}
+		{block.size}
 	</p>
 </div>
-
-<style>
-</style>

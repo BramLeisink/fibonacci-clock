@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import { Check, Settings2 } from 'lucide-svelte';
+	import { Check, Lightbulb, LightbulbOff, Settings2, Vibrate, VibrateOff } from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import type { Themes } from '$lib/types';
@@ -10,8 +10,16 @@
 	let {
 		colorTheme = $bindable(),
 		themes,
-		shapeTheme = $bindable()
-	}: { colorTheme: keyof typeof themes; themes: Themes; shapeTheme: string } = $props();
+		shapeTheme = $bindable(),
+		glow = $bindable(),
+		animate = $bindable()
+	}: {
+		colorTheme: keyof typeof themes;
+		themes: Themes;
+		shapeTheme: string;
+		glow: boolean;
+		animate: boolean;
+	} = $props();
 
 	// Utility to determine if a theme is selected
 	const isSelected = (key: string, current: string) => key === current;
@@ -21,14 +29,15 @@
 </script>
 
 {#snippet content()}
-	<div class="mx-auto max-w-md p-4">
-		<div class="mb-6 grid grid-cols-4 gap-4">
+	<div class="mx-auto flex max-w-md flex-col items-center p-4">
+		<div class="grid grid-cols-4 gap-4">
 			{#each Object.entries(themes) as [themeKey, colors]}
 				<button
 					class={`relative grid h-16 w-16 cursor-pointer grid-cols-2 grid-rows-2 rounded-lg shadow-lg transition-all duration-300`}
 					onclick={() => (colorTheme = themeKey)}
 					aria-label={`Theme ${themeKey}`}
 					title={`Select theme ${themeKey}`}
+					style={`filter: ${isSelected(themeKey, colorTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				>
 					<div
 						class="row-span-2 h-full w-full rounded-bl-lg rounded-tl-lg"
@@ -52,13 +61,13 @@
 			{/each}
 		</div>
 
-		<Separator class="my-4" />
+		<Separator class="my-6" />
 
 		<div class="grid grid-cols-3 gap-4">
 			<!-- Rounded -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-lg shadow-lg transition-all duration-300 `}
-				style={`background-color: ${themes[colorTheme].hour}`}
+				style={`background-color: ${themes[colorTheme].hour}; filter: ${isSelected('rounded', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'rounded')}
 				aria-label="Rounded Shape"
 				title="Select Rounded Shape"
@@ -71,7 +80,7 @@
 			<!-- Square -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].minute}`}
+				style={`background-color: ${themes[colorTheme].minute}; filter: ${isSelected('square', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'square')}
 				aria-label="Square Shape"
 				title="Select Square Shape"
@@ -84,13 +93,45 @@
 			<!-- Circle -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].both}`}
+				style={`background-color: ${themes[colorTheme].both}; filter: ${isSelected('circle', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'circle')}
 				aria-label="Circle Shape"
 				title="Select Circle Shape"
 			>
 				{#if isSelected('circle', shapeTheme)}
 					<Check strokeWidth={3} />
+				{/if}
+			</button>
+		</div>
+
+		<Separator class="my-6" />
+
+		<div class="grid grid-cols-2 gap-4">
+			<!-- Rounded -->
+			<button
+				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
+				style={`filter: ${glow == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				onclick={() => (glow = !glow)}
+				aria-label="Glow"
+				title="Toggle Glow"
+			>
+				{#if glow == true}
+					<Lightbulb />
+				{:else}
+					<LightbulbOff />
+				{/if}
+			</button>
+			<button
+				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
+				style={`filter: ${animate == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				onclick={() => (animate = !animate)}
+				aria-label="Animate"
+				title="Toggle Animations"
+			>
+				{#if animate == true}
+					<Vibrate />
+				{:else}
+					<VibrateOff />
 				{/if}
 			</button>
 		</div>

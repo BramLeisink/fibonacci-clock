@@ -15,6 +15,8 @@
 	let isFullscreen = $state(false);
 	let colorTheme: keyof typeof themes = $state('default');
 	let shapeTheme: 'circle' | 'rounded' | 'square' = $state('rounded');
+	let glow = $state(false);
+	let animate = $state(true);
 
 	const themes: Themes = {
 		default: { hour: '#ef4444', minute: '#22c55e', both: '#3b82f6' },
@@ -29,6 +31,8 @@
 	onMount(() => {
 		const savedColorTheme = localStorage.getItem('colorTheme');
 		const savedShapeTheme = localStorage.getItem('shapeTheme');
+		glow = localStorage.getItem('glow') === 'true';
+		animate = localStorage.getItem('animate') === 'true';
 
 		if (savedColorTheme && savedColorTheme in themes) {
 			colorTheme = savedColorTheme as keyof typeof themes;
@@ -39,11 +43,11 @@
 		}
 
 		blocks = [
-			{ size: 5, value: 5, pos: [4, 1] },
-			{ size: 3, value: 3, pos: [1, 3] },
-			{ size: 2, value: 2, pos: [1, 1] },
-			{ size: 1, value: 1, pos: [3, 1] },
-			{ size: 1, value: 1, pos: [3, 2] }
+			{ size: 10, value: 5, pos: [7, 1] },
+			{ size: 6, value: 3, pos: [1, 5] },
+			{ size: 4, value: 2, pos: [1, 1] },
+			{ size: 2, value: 1, pos: [5, 1] },
+			{ size: 2, value: 1, pos: [5, 3] }
 		];
 	});
 
@@ -72,7 +76,7 @@
 					if (configuration[0][index] && configuration[1][index]) return colors.both;
 					if (configuration[0][index]) return colors.hour;
 					if (configuration[1][index]) return colors.minute;
-					return 'bg-gray-200 dark:bg-gray-600';
+					return null;
 				})
 			};
 		}
@@ -113,6 +117,8 @@
 	$effect(() => {
 		localStorage.setItem('colorTheme', colorTheme);
 		localStorage.setItem('shapeTheme', shapeTheme);
+		localStorage.setItem('glow', String(glow));
+		localStorage.setItem('animate', String(animate));
 	});
 
 	function toggleFullscreen() {
@@ -148,7 +154,7 @@
 					<Button variant="ghost" size="icon" onclick={() => (showLegend = !showLegend)}>
 						<Info class="h-5 w-5" />
 					</Button>
-					<SettingsModal bind:colorTheme {themes} bind:shapeTheme />
+					<SettingsModal bind:colorTheme bind:glow {themes} bind:animate bind:shapeTheme />
 					<Button variant="ghost" size="icon" class="hidden lg:flex" onclick={toggleFullscreen}>
 						{#if isFullscreen}
 							<Minimize2 class="h-5 w-5" />
@@ -160,7 +166,7 @@
 			</div>
 			<!-- Grid container, with the click event to trigger rerender -->
 			<button
-				class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+				class={`grid-cols-16 mb-6 grid aspect-[8/5] grid-rows-10 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
 				onclick={handleGridClick}
 			>
 				{#key gridClicked}
@@ -171,6 +177,8 @@
 							index={i}
 							style={shapeTheme}
 							delay={(blocks.length - i) * 100 + 100}
+							{glow}
+							{animate}
 						/>
 					{/each}
 				{/key}
