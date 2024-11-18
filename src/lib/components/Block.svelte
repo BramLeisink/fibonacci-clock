@@ -73,7 +73,7 @@
 		<p
 			class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
 		>
-			¼
+			⅕
 		</p>
 	{:else}
 		<p
