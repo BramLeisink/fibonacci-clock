@@ -1,7 +1,16 @@
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import { Check, Lightbulb, LightbulbOff, Settings2, Vibrate, VibrateOff } from 'lucide-svelte';
+	import {
+		Check,
+		Lightbulb,
+		LightbulbOff,
+		Settings2,
+		Timer,
+		TimerOff,
+		Vibrate,
+		VibrateOff
+	} from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import type { Themes } from '$lib/types';
@@ -12,13 +21,15 @@
 		themes,
 		shapeTheme = $bindable(),
 		glow = $bindable(),
-		animate = $bindable()
+		animate = $bindable(),
+		showMinutes = $bindable()
 	}: {
 		colorTheme: keyof typeof themes;
 		themes: Themes;
 		shapeTheme: string;
 		glow: boolean;
 		animate: boolean;
+		showMinutes: boolean;
 	} = $props();
 
 	// Utility to determine if a theme is selected
@@ -106,7 +117,7 @@
 
 		<Separator class="my-6" />
 
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-3 gap-4">
 			<!-- Rounded -->
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
@@ -134,6 +145,19 @@
 					<VibrateOff />
 				{/if}
 			</button>
+			<button
+				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
+				style={`filter: ${showMinutes == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				onclick={() => (showMinutes = !showMinutes)}
+				aria-label="Show Minutes"
+				title="Toggle Show Minutes"
+			>
+				{#if showMinutes == true}
+					<Timer />
+				{:else}
+					<TimerOff />
+				{/if}
+			</button>
 		</div>
 	</div>
 {/snippet}
@@ -141,14 +165,14 @@
 {#if isDesktop.matches}
 	<Dialog.Root bind:open>
 		<Dialog.Trigger>
-			<Button variant="ghost" size="icon" aria-label="Open instellingen">
+			<Button variant="ghost" size="icon" aria-label="Open settings">
 				<Settings2 class="h-5 w-5" />
 			</Button>
 		</Dialog.Trigger>
 
 		<Dialog.Content>
 			<Dialog.Header>
-				<h3 class="mb-4 text-lg font-semibold">Instellingen</h3>
+				<h3 class="mb-4 text-lg font-semibold">Settings</h3>
 			</Dialog.Header>
 			{@render content()}
 		</Dialog.Content>
@@ -163,7 +187,7 @@
 
 		<Drawer.Content class="mb-4">
 			<Drawer.Header>
-				<h3 class="mb-4 text-lg font-semibold">Instellingen</h3>
+				<h3 class="mb-4 text-lg font-semibold">Settings</h3>
 			</Drawer.Header>
 			{@render content()}
 		</Drawer.Content>

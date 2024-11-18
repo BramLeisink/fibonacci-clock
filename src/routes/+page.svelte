@@ -17,6 +17,7 @@
 	let shapeTheme: 'circle' | 'rounded' | 'square' = $state('rounded');
 	let glow = $state(false);
 	let animate = $state(true);
+	let showMinutes = $state(true);
 
 	const themes: Themes = {
 		default: { hour: '#ef4444', minute: '#22c55e', both: '#3b82f6' },
@@ -26,6 +27,7 @@
 	};
 
 	let blocks = $state([]) as Blocks;
+	let subBlocks = $state([]) as Blocks;
 	let gridClicked = $state(false); // This will trigger the rerender of blocks
 
 	onMount(() => {
@@ -33,6 +35,7 @@
 		const savedShapeTheme = localStorage.getItem('shapeTheme');
 		glow = localStorage.getItem('glow') === 'true';
 		animate = localStorage.getItem('animate') === 'true';
+		showMinutes = localStorage.getItem('showMinutes') === 'true';
 
 		if (savedColorTheme && savedColorTheme in themes) {
 			colorTheme = savedColorTheme as keyof typeof themes;
@@ -43,11 +46,18 @@
 		}
 
 		blocks = [
-			{ size: 10, value: 5, pos: [7, 1] },
-			{ size: 6, value: 3, pos: [1, 5] },
-			{ size: 4, value: 2, pos: [1, 1] },
-			{ size: 2, value: 1, pos: [5, 1] },
-			{ size: 2, value: 1, pos: [5, 3] }
+			{ size: 5, value: 5, pos: [4, 1] },
+			{ size: 3, value: 3, pos: [1, 3] },
+			{ size: 2, value: 2, pos: [1, 1] },
+			{ size: 1, value: 1, pos: [3, 1] },
+			{ size: 1, value: 1, pos: [3, 2] }
+		];
+
+		subBlocks = [
+			{ size: 1, value: 0.25, pos: [2, 1] },
+			{ size: 1, value: 0.25, pos: [2, 2] },
+			{ size: 1, value: 0.25, pos: [1, 2] },
+			{ size: 1, value: 0.25, pos: [1, 1] }
 		];
 	});
 
@@ -57,8 +67,11 @@
 		let hours = time.getHours() % 12 || 12;
 		let minutes = Math.floor(time.getMinutes() / 5);
 
-		let bestSolution: { colors: string[]; unusedHours: number; unusedMinutes: number } | null =
-			null;
+		let bestSolution: {
+			colors: (string | null)[];
+			unusedHours: number;
+			unusedMinutes: number;
+		} | null = null;
 
 		function tryConfiguration(configuration: boolean[][]) {
 			let hourSum = 0;
@@ -106,6 +119,24 @@
 		return bestSolution?.colors || blocks.map(() => 'dark:bg-gray-600 bg-gray-200');
 	}
 
+	function getMinuteBlockColors() {
+		const colors = themes[colorTheme];
+		let minutes = Math.floor(time.getMinutes() % 5);
+		let hours = false;
+
+		if (getBlockColors()[-1]) {
+			hours = true;
+		}
+
+		const result = Array(4).fill(hours ? colors.hour : null);
+
+		for (let i = 0; i < minutes; i++) {
+			result[i] = hours ? colors.both : colors.minute;
+		}
+
+		return result.reverse();
+	}
+
 	// Update time every second
 	$effect(() => {
 		const interval = setInterval(() => {
@@ -119,6 +150,7 @@
 		localStorage.setItem('shapeTheme', shapeTheme);
 		localStorage.setItem('glow', String(glow));
 		localStorage.setItem('animate', String(animate));
+		localStorage.setItem('showMinutes', String(showMinutes));
 	});
 
 	function toggleFullscreen() {
@@ -131,9 +163,8 @@
 		}
 	}
 
-	// Handle the grid click event to trigger rerender
 	function handleGridClick() {
-		gridClicked = !gridClicked; // Toggle the value to force a rerender
+		gridClicked = !gridClicked;
 	}
 </script>
 
@@ -147,14 +178,21 @@
 					class={`bg-clip-text text-4xl font-bold text-transparent`}
 					style={`background-image: linear-gradient(to right, ${themes[colorTheme].hour} , ${themes[colorTheme].minute});`}
 				>
-					Fibonacci Klok
+					Fibonacci Clock
 				</h1>
 				<div class="mt-4 flex gap-2 md:mt-0">
 					<LightSwitch />
 					<Button variant="ghost" size="icon" onclick={() => (showLegend = !showLegend)}>
 						<Info class="h-5 w-5" />
 					</Button>
-					<SettingsModal bind:colorTheme bind:glow {themes} bind:animate bind:shapeTheme />
+					<SettingsModal
+						bind:showMinutes
+						bind:colorTheme
+						bind:glow
+						{themes}
+						bind:animate
+						bind:shapeTheme
+					/>
 					<Button variant="ghost" size="icon" class="hidden lg:flex" onclick={toggleFullscreen}>
 						{#if isFullscreen}
 							<Minimize2 class="h-5 w-5" />
@@ -165,24 +203,39 @@
 				</div>
 			</div>
 			<!-- Grid container, with the click event to trigger rerender -->
-			<button
-				class={`grid-cols-16 mb-6 grid aspect-[8/5] grid-rows-10 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
-				onclick={handleGridClick}
-			>
-				{#key gridClicked}
-					{#each blocks as block, i}
+			{#key gridClicked}
+				<button
+					class={`mb-6 grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+					onclick={handleGridClick}
+				>
+					{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
 						<Block
 							{block}
 							color={getBlockColors()[i]}
 							index={i}
 							style={shapeTheme}
-							delay={(blocks.length - i) * 100 + 100}
+							delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
 							{glow}
 							{animate}
 						/>
 					{/each}
-				{/key}
-			</button>
+					{#if showMinutes}
+						<div class="grid grid-cols-2 grid-rows-2 gap-2">
+							{#each subBlocks as block, i}
+								<Block
+									{block}
+									color={getMinuteBlockColors()[i]}
+									index={i - 1}
+									style={shapeTheme == 'circle' ? 'rounded' : shapeTheme}
+									delay={(blocks.length - i) * 100 + 100}
+									{glow}
+									{animate}
+								/>
+							{/each}
+						</div>
+					{/if}
+				</button>
+			{/key}
 			{#if showLegend}
 				<Legend {colorTheme} {themes} />
 			{/if}

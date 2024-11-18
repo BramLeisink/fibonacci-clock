@@ -68,9 +68,18 @@
 	></div>
 
 	<!-- Square Content -->
-	<p
-		class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
-	>
-		{block.size}
-	</p>
+
+	{#if block.value === 0.25}
+		<p
+			class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+		>
+			¼
+		</p>
+	{:else}
+		<p
+			class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+		>
+			{block.value}
+		</p>
+	{/if}
 </div>
