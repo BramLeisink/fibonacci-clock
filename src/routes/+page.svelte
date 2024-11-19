@@ -222,7 +222,8 @@
 				</div>
 			</div>
 			<!-- Grid container, with the click event to trigger rerender -->
-			<div class="mb-6">
+			<!-- This grid should not be at the bottom of the page! -->
+			<div class="flex flex-col items-center justify-center">
 			{#key gridClicked}
 				<div
 					class={`z-10 absolute grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
