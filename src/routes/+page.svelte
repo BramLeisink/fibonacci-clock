@@ -224,36 +224,68 @@
 			<div class="flex flex-col items-center justify-center">
 				{#key gridClicked}
 					<div
-						class={`grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
-						onclick={handleGridClick}
-					>
-						{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
-							<Block
-								{block}
-								color={getBlockColors()[i]}
-								index={i}
-								style={shapeTheme}
-								delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
-								{glow}
-								{animate}
-							/>
-						{/each}
-						{#if showMinutes}
-							<div class="grid grid-cols-2 grid-rows-2 gap-2">
-								{#each subBlocks as block, i}
-									<Block
-										{block}
-										color={getMinuteBlockColors()[i]}
-										index={i - 1}
-										style={shapeTheme == 'circle' ? 'rounded' : shapeTheme}
-										delay={(blocks.length - i) * 100 + 100}
-										{glow}
-										{animate}
-									/>
-								{/each}
-							</div>
-						{/if}
-					</div>
+					class={`z-10 absolute grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+					onclick={handleGridClick}
+				>
+					{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
+						<Block
+					 		{block}
+							color={getBlockColors()[i]}
+							index={i}
+							style={shapeTheme}
+							delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
+							{glow}
+							{animate}
+						/>
+					{/each}
+					{#if showMinutes}
+						<div class="grid grid-cols-2 grid-rows-2 gap-2">
+							{#each subBlocks as block, i}
+								<Block
+									{block}
+									color={getMinuteBlockColors()[i]}
+									index={i - 1}
+									style={shapeTheme == 'circle' ? 'rounded' : shapeTheme}
+									delay={(blocks.length - i) * 100 + 100}
+									{glow}
+									{animate}
+								/>
+							{/each}
+						</div>
+					{/if}
+				</div>
+				<div
+					class={`absolute grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+					onclick={handleGridClick}
+					style={`filter: blur(${glow ? '40px' : '0px'})`}
+				>
+					{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
+						<Block
+					 		{block}
+							color={getBlockColors()[i]}
+							index={i}
+							style={shapeTheme}
+							delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
+							{glow}
+							{animate}
+						/>
+					{/each}
+					{#if showMinutes}
+						<div class="grid grid-cols-2 grid-rows-2 gap-2">
+							{#each subBlocks as block, i}
+								<Block
+									{block}
+									color={getMinuteBlockColors()[i]}
+									index={i - 1}
+									style={shapeTheme == 'circle' ? 'rounded' : shapeTheme}
+									delay={(blocks.length - i) * 100 + 100}
+									{glow}
+									{animate}
+								/>
+							{/each}
+						</div>
+					{/if}
+				</div>
 				{/key}
 			</div>
 			{#if showLegend}
