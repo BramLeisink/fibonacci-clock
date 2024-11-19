@@ -225,7 +225,7 @@
 			<div class="mb-6">
 			{#key gridClicked}
 				<div
-					class={`absolute grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
+					class={`z-10 absolute grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[80vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
 					onclick={handleGridClick}
 				>
 					{#each blocks.slice(0, showMinutes ? -1 : blocks.length) as block, i}
