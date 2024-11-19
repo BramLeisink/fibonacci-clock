@@ -33,9 +33,10 @@
 	onMount(() => {
 		const savedColorTheme = localStorage.getItem('colorTheme');
 		const savedShapeTheme = localStorage.getItem('shapeTheme');
-		glow = localStorage.getItem('glow') === 'true';
-		animate = localStorage.getItem('animate') === 'true';
-		showMinutes = localStorage.getItem('showMinutes') === 'true';
+		const savedGlow = localStorage.getItem('glow');
+		const savedAnimate = localStorage.getItem('animate');
+		const savedShowMinutes = localStorage.getItem('showMinutes');
+		const savedShowLegend = localStorage.getItem('showLegend');
 
 		if (savedColorTheme && savedColorTheme in themes) {
 			colorTheme = savedColorTheme as keyof typeof themes;
@@ -44,6 +45,23 @@
 		if (savedShapeTheme && ['circle', 'rounded', 'square'].includes(savedShapeTheme)) {
 			shapeTheme = savedShapeTheme as 'circle' | 'rounded' | 'square';
 		}
+
+		if (savedGlow) {
+			glow = (savedGlow === "true")
+		}
+
+		if (savedAnimate) {
+			animate = (savedAnimate === "true")
+		}
+
+		if (savedShowMinutes) {
+			showMinutes = (savedShowMinutes === "true")
+		}
+
+		if (savedShowLegend) {
+			showLegend = (savedShowLegend === "true")
+		}
+		
 
 		blocks = [
 			{ size: 5, value: 5, pos: [4, 1] },
@@ -151,6 +169,7 @@
 		localStorage.setItem('glow', String(glow));
 		localStorage.setItem('animate', String(animate));
 		localStorage.setItem('showMinutes', String(showMinutes));
+		localStorage.setItem('showLegend', String(showLegend));
 	});
 
 	function toggleFullscreen() {
