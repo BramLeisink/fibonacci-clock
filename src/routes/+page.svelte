@@ -140,7 +140,7 @@
 	function getMinuteBlockColors() {
 		const colors = themes[colorTheme];
 		let minutes = Math.floor(time.getMinutes() % 5);
-		let hours = false;
+		let hours = true;
 
 		if (getBlockColors()[-1]) {
 			hours = true;
