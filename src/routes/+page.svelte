@@ -197,7 +197,7 @@
 					class={`bg-clip-text text-4xl font-bold text-transparent`}
 					style={`background-image: linear-gradient(to right, ${themes[colorTheme].hour} , ${themes[colorTheme].minute});`}
 				>
-					Fibonacci Clock
+					Fibonacci Klok
 				</h1>
 				<div class="mt-4 flex gap-2 md:mt-0">
 					<LightSwitch />
