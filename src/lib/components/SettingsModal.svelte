@@ -160,6 +160,9 @@
 			</button>
 		</div>
 	</div>
+	<div class="w-full py-2 text-center text-muted-foreground">
+		<p class="text-sm">© 2024 Bram Leisink</p>
+	</div>
 {/snippet}
 
 {#if isDesktop.matches}
