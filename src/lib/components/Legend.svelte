@@ -16,19 +16,19 @@
 	<div class="space-y-3">
 		<div class="flex items-center gap-2">
 			<div class={`h-4 w-4 rounded`} style={`background-color: ${themes[colorTheme].hour}`}></div>
-			<span class="dark:text-white">Hours</span>
+			<span class="dark:text-white">Uren</span>
 		</div>
 		<div class="flex items-center gap-2">
 			<div class={`h-4 w-4 rounded`} style={`background-color: ${themes[colorTheme].minute}`}></div>
-			<span class="dark:text-white">Minutes (×5)</span>
+			<span class="dark:text-white">Minuten (×5)</span>
 		</div>
 		<div class="flex items-center gap-2">
 			<div class={`h-4 w-4 rounded`} style={`background-color: ${themes[colorTheme].both}`}></div>
-			<span class="dark:text-white">Both</span>
+			<span class="dark:text-white">Beide</span>
 		</div>
 		<div class="flex items-center gap-2">
 			<div class="h-4 w-4 rounded bg-gray-200 dark:bg-gray-600"></div>
-			<span class="dark:text-white">Inactive</span>
+			<span class="dark:text-white">Uitgeschakeld</span>
 		</div>
 	</div>
 </div>

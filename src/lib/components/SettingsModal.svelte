@@ -123,8 +123,8 @@
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
 				style={`filter: ${glow == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (glow = !glow)}
-				aria-label="Glow"
-				title="Toggle Glow"
+				aria-label="Gloei"
+				title="Schakel gloei"
 			>
 				{#if glow == true}
 					<Lightbulb />
@@ -136,8 +136,8 @@
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
 				style={`filter: ${animate == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (animate = !animate)}
-				aria-label="Animate"
-				title="Toggle Animations"
+				aria-label="Animaties"
+				title="Schakel animaties"
 			>
 				{#if animate == true}
 					<Vibrate />
@@ -149,8 +149,8 @@
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
 				style={`filter: ${showMinutes == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
 				onclick={() => (showMinutes = !showMinutes)}
-				aria-label="Show Minutes"
-				title="Toggle Show Minutes"
+				aria-label="Wissel minuten"
+				title="Wissel minuten"
 			>
 				{#if showMinutes == true}
 					<Timer />
@@ -168,14 +168,14 @@
 {#if isDesktop.matches}
 	<Dialog.Root bind:open>
 		<Dialog.Trigger>
-			<Button variant="ghost" size="icon" aria-label="Open settings">
+			<Button variant="ghost" size="icon" aria-label="Open instellingen">
 				<Settings2 class="h-5 w-5" />
 			</Button>
 		</Dialog.Trigger>
 
 		<Dialog.Content>
 			<Dialog.Header>
-				<h3 class="mb-4 text-lg font-semibold">Settings</h3>
+				<h3 class="mb-4 text-lg font-semibold">Instellingen</h3>
 			</Dialog.Header>
 			{@render content()}
 		</Dialog.Content>
@@ -183,14 +183,14 @@
 {:else}
 	<Drawer.Root bind:open>
 		<Drawer.Trigger>
-			<Button variant="ghost" size="icon" aria-label="Open Settings">
+			<Button variant="ghost" size="icon" aria-label="Open instellingen">
 				<Settings2 class="h-5 w-5" />
 			</Button>
 		</Drawer.Trigger>
 
 		<Drawer.Content class="mb-4">
 			<Drawer.Header>
-				<h3 class="mb-4 text-lg font-semibold">Settings</h3>
+				<h3 class="mb-4 text-lg font-semibold">Instellingen</h3>
 			</Drawer.Header>
 			{@render content()}
 		</Drawer.Content>
