@@ -233,7 +233,7 @@
 		let hours = false;
 
 		if (time.getHours() % 12 == 0) {
-			let hours = true;
+			hours = true;
 		}
 
 		if (getBlockColors()[-1]) {
