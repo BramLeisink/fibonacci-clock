@@ -23,7 +23,8 @@
 		minutes: true,
 		legend: false,
 		fullscreen: false,
-		mode: 'light' as 'light' | 'dark'
+		mode: 'light' as 'light' | 'dark',
+		bg: ''
 	};
 
 	let loading = $state(true);
@@ -36,6 +37,7 @@
 	let glow = $state(DEFAULT_VALUES.glow);
 	let animate = $state(DEFAULT_VALUES.animate);
 	let showMinutes = $state(DEFAULT_VALUES.minutes);
+	let background = $state(DEFAULT_VALUES.bg);
 
 	const themes: Themes = {
 		default: { hour: '#ef4444', minute: '#22c55e', both: '#3b82f6' },
@@ -81,6 +83,11 @@
 			setMode(modeParam);
 		}
 
+		const bgParam = searchParams.get('bg');
+		if (bgParam) {
+			background = bgParam;
+		}
+
 		if (isFullscreen && document.documentElement.requestFullscreen) {
 			document.documentElement.requestFullscreen();
 		}
@@ -109,6 +116,7 @@
 		updateParam('minutes', showMinutes);
 		updateParam('legend', showLegend);
 		updateParam('fullscreen', isFullscreen);
+		updateParam('bg', background);
 
 		if ($mode == 'dark') {
 			currentParams.set('mode', 'dark');
@@ -264,6 +272,7 @@
 		localStorage.setItem('animate', String(animate));
 		localStorage.setItem('showMinutes', String(showMinutes));
 		localStorage.setItem('showLegend', String(showLegend));
+		localStorage.setItem('bg', String(background));
 	});
 
 	function handleGridClick() {
@@ -272,12 +281,15 @@
 </script>
 
 {#if !loading}
-	<div class="min-h-screen bg-gray-50 transition-colors duration-300 dark:bg-gray-900">
+	<div
+		class="min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-300"
+		style="background-image: url({background})"
+	>
 		<div class="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
 			<div class="relative {isFullscreen ? '' : 'space-y-4'}">
 				{#if isFullscreen}
 					<div
-						class="fixed right-2 top-2 z-10 flex gap-2 rounded-lg bg-background p-2 opacity-0 shadow transition-opacity hover:opacity-100"
+						class="fixed right-2 top-2 z-50 flex gap-2 rounded-lg bg-background p-2 opacity-0 shadow transition-opacity hover:opacity-100"
 					>
 						<LightSwitch />
 						<Button variant="ghost" size="icon" onclick={() => (showLegend = !showLegend)}>
@@ -307,7 +319,7 @@
 							class={`bg-clip-text text-4xl font-bold text-transparent transition-all duration-300`}
 							style={`background-image: linear-gradient(to right, ${themes[colorTheme].hour} , ${themes[colorTheme].minute});`}
 						>
-							Fibonacci Clock
+							Fibonacci Klok
 						</h1>
 						<div class="mt-4 flex gap-2 md:mt-0">
 							<LightSwitch />
@@ -335,7 +347,9 @@
 
 				<!-- Grid container, with the click event to trigger rerender -->
 				{#key gridClicked}
-					<button
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div
 						class={`grid aspect-[8/5] grid-cols-8 grid-rows-5 gap-2 transition-all duration-300 ${isFullscreen ? 'h-[95vh]' : 'w-[300px] md:w-[400px] lg:w-[600px]'} `}
 						onclick={handleGridClick}
 					>
@@ -348,6 +362,7 @@
 								delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
 								{glow}
 								{animate}
+								glass={background != ''}
 							/>
 						{/each}
 						{#if showMinutes}
@@ -361,11 +376,12 @@
 										delay={(blocks.length - i) * 100 + 100}
 										{glow}
 										{animate}
+										glass={background != ''}
 									/>
 								{/each}
 							</div>
 						{/if}
-					</button>
+					</div>
 				{/key}
 				{#if showLegend}
 					<Legend {colorTheme} {themes} {isFullscreen} />

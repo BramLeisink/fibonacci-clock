@@ -5,16 +5,19 @@
 		index,
 		style,
 		delay = 0,
-		glow,
-		animate
+		glow = false,
+		animate = false,
+		glass = false
 	}: {
 		block: any;
 		color: string | null;
 		index: number;
 		style: string;
 		delay: number;
-		glow: boolean;
-		animate: boolean;
+		glow?: boolean;
+		animate?: boolean;
+		false?: boolean;
+		glass?: boolean;
 	} = $props();
 
 	const rotationOffset = 2;
@@ -57,31 +60,63 @@
 	<div class="motion-preset-pop"></div>
 {/if}
 
-<div
-	class={`group ${animate ? 'motion-preset-pop' : ''} relative z-10 flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
-	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
->
-	{#if block.value === 0.25}
-		<p
-			class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
-		>
-			⅕
-		</p>
-	{:else}
-		<p
-			class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
-		>
-			{block.value}
-		</p>
-	{/if}
-</div>
-
-<div
-	class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center transition-all duration-300`}
-	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
->
+{#if glass}
 	<div
-		class="absolute inset-0 -z-10 transition-all duration-300"
-		style={`background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
-	></div>
-</div>
+		class="group relative z-10 flex items-center justify-center bg-gray-200/40 transition-all duration-300
+		{animate ? 'motion-preset-pop' : ''} backdrop-blur"
+		style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}66; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
+	>
+		{#if block.value === 0.25}
+			<p
+				class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+			>
+				⅕
+			</p>
+		{:else}
+			<p
+				class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+			>
+				{block.value}
+			</p>
+		{/if}
+	</div>
+
+	<div
+		class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center transition-all duration-300`}
+		style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
+	>
+		<div
+			class="absolute inset-0 -z-10 transition-all duration-300"
+			style={`background-color: ${color}66; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
+		></div>
+	</div>
+{:else}
+	<div
+		class={`group ${animate ? 'motion-preset-pop' : ''} relative z-10 flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
+		style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
+	>
+		{#if block.value === 0.25}
+			<p
+				class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+			>
+				⅕
+			</p>
+		{:else}
+			<p
+				class="text-2xl font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
+			>
+				{block.value}
+			</p>
+		{/if}
+	</div>
+
+	<div
+		class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center transition-all duration-300`}
+		style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
+	>
+		<div
+			class="absolute inset-0 -z-10 transition-all duration-300"
+			style={`background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
+		></div>
+	</div>
+{/if}
