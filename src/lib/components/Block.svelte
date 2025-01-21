@@ -58,17 +58,9 @@
 {/if}
 
 <div
-	class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
+	class={`group ${animate ? 'motion-preset-pop' : ''} relative z-10 flex items-center justify-center bg-gray-200 shadow-md shadow-black/10 transition-all duration-300 dark:bg-gray-600 dark:shadow-lg dark:shadow-black/20`}
 	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
 >
-	<!-- Glow Layer -->
-	<div
-		class="absolute inset-0 -z-10 transition-all duration-300"
-		style={`background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
-	></div>
-
-	<!-- Square Content -->
-
 	{#if block.value === 0.25}
 		<p
 			class="text-lg font-extrabold text-transparent transition-all duration-300 group-hover:text-foreground"
@@ -82,4 +74,14 @@
 			{block.value}
 		</p>
 	{/if}
+</div>
+
+<div
+	class={`group ${animate ? 'motion-preset-pop' : ''} relative flex items-center justify-center transition-all duration-300`}
+	style={`grid-column: ${block.pos[0]} / span ${block.size}; grid-row: ${block.pos[1]} / span ${block.size}; ${getBorderRadius(index, rotationOffset)}; --motion-delay: ${delay}ms;`}
+>
+	<div
+		class="absolute inset-0 -z-10 transition-all duration-300"
+		style={`background-color: ${color}; ${getBorderRadius(index, rotationOffset)}; filter: blur(${glow ? '40px' : '0px'})`}
+	></div>
 </div>
