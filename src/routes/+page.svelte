@@ -389,7 +389,7 @@
 			</div>
 		</div>
 			<div class="fixed bottom-0 left-0 w-full py-2 text-center text-muted-foreground">
-				<p class="text-sm">© 2024 Lucas Brouwer</p>
+				<p class="text-sm">© 2025 Lucas Brouwer</p>
 		</div>
 	</div>
 {/if}

@@ -161,7 +161,7 @@
 		</div>
 	</div>
 	<div class="w-full py-2 text-center text-muted-foreground">
-		<p class="text-sm">© 2024 Lucas Brouwer</p>
+		<p class="text-sm">© 2025 Lucas Brouwer</p>
 	</div>
 {/snippet}
 
