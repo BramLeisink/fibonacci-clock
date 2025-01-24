@@ -13,6 +13,8 @@
 
 	import type { Themes, Blocks } from '$lib/types.ts';
 	import { Info, Maximize2, Minimize2 } from 'lucide-svelte';
+	import BgCarousel from '$lib/components/BgCarousel.svelte';
+	import Switch from '$lib/components/ui/switch/switch.svelte';
 
 	// Define default values
 	const DEFAULT_VALUES = {
@@ -24,7 +26,7 @@
 		legend: false,
 		fullscreen: false,
 		mode: 'light' as 'light' | 'dark',
-		bg: ''
+		bg: false
 	};
 
 	let loading = $state(true);
@@ -37,7 +39,7 @@
 	let glow = $state(DEFAULT_VALUES.glow);
 	let animate = $state(DEFAULT_VALUES.animate);
 	let showMinutes = $state(DEFAULT_VALUES.minutes);
-	let background = $state(DEFAULT_VALUES.bg);
+	let bgSetup: { images: string[]; delay: number } = $state({ images: [], delay: 10000 });
 
 	const themes: Themes = {
 		default: { hour: '#ef4444', minute: '#22c55e', both: '#3b82f6' },
@@ -83,11 +85,6 @@
 			setMode(modeParam);
 		}
 
-		const bgParam = searchParams.get('bg');
-		if (bgParam) {
-			background = bgParam;
-		}
-
 		if (isFullscreen && document.documentElement.requestFullscreen) {
 			document.documentElement.requestFullscreen();
 		}
@@ -116,7 +113,6 @@
 		updateParam('minutes', showMinutes);
 		updateParam('legend', showLegend);
 		updateParam('fullscreen', isFullscreen);
-		updateParam('bg', background);
 
 		if ($mode == 'dark') {
 			currentParams.set('mode', 'dark');
@@ -272,7 +268,6 @@
 		localStorage.setItem('animate', String(animate));
 		localStorage.setItem('showMinutes', String(showMinutes));
 		localStorage.setItem('showLegend', String(showLegend));
-		localStorage.setItem('bg', String(background));
 	});
 
 	function handleGridClick() {
@@ -280,11 +275,12 @@
 	}
 </script>
 
+{#if bgSetup.images.length > 0}
+	<BgCarousel {bgSetup} />
+{/if}
+
 {#if !loading}
-	<div
-		class="min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-300"
-		style="background-image: url({background})"
-	>
+	<div class="min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-300">
 		<div class="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
 			<div class="relative {isFullscreen ? '' : 'space-y-4'}">
 				{#if isFullscreen}
@@ -302,6 +298,7 @@
 							{themes}
 							bind:animate
 							bind:shapeTheme
+							bind:bgSetup
 						/>
 						<Button variant="ghost" size="icon" class="hidden lg:flex" onclick={toggleFullscreen}>
 							{#if isFullscreen}
@@ -333,6 +330,7 @@
 								{themes}
 								bind:animate
 								bind:shapeTheme
+								bind:bgSetup
 							/>
 							<Button variant="ghost" size="icon" class="hidden lg:flex" onclick={toggleFullscreen}>
 								{#if isFullscreen}
@@ -362,7 +360,7 @@
 								delay={(blocks.length + (showMinutes ? subBlocks.length : 0) - i) * 100 + 100}
 								{glow}
 								{animate}
-								glass={background != ''}
+								glass={bgSetup.images.length > 0}
 							/>
 						{/each}
 						{#if showMinutes}
@@ -376,7 +374,7 @@
 										delay={(blocks.length - i) * 100 + 100}
 										{glow}
 										{animate}
-										glass={background != ''}
+										glass={bgSetup.images.length > 0}
 									/>
 								{/each}
 							</div>
