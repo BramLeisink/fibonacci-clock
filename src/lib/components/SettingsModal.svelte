@@ -90,7 +90,7 @@
 					onclick={() => (colorTheme = themeKey)}
 					aria-label={`Theme ${themeKey}`}
 					title={`Select theme ${themeKey}`}
-					style={`filter: ${isSelected(themeKey, colorTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+					style={`filter: ${isSelected(themeKey, colorTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				>
 					<div
 						class="row-span-2 h-full w-full rounded-bl-lg rounded-tl-lg"
@@ -120,7 +120,7 @@
 			<!-- Rounded -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-lg shadow-lg transition-all duration-300 `}
-				style={`background-color: ${themes[colorTheme].hour}; filter: ${isSelected('rounded', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].hour}; filter: ${isSelected('rounded', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'rounded')}
 				aria-label="Rounded Shape"
 				title="Select Rounded Shape"
@@ -133,7 +133,7 @@
 			<!-- Square -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].minute}; filter: ${isSelected('square', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].minute}; filter: ${isSelected('square', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'square')}
 				aria-label="Square Shape"
 				title="Select Square Shape"
@@ -146,7 +146,7 @@
 			<!-- Circle -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].both}; filter: ${isSelected('circle', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].both}; filter: ${isSelected('circle', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'circle')}
 				aria-label="Circle Shape"
 				title="Select Circle Shape"
@@ -163,7 +163,7 @@
 			<!-- Rounded -->
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${glow == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${glow == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (glow = !glow)}
 				aria-label="Gloei"
 				title="Schakel gloei"
@@ -176,7 +176,7 @@
 			</button>
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${animate == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${animate == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (animate = !animate)}
 				aria-label="Animaties"
 				title="Schakel animaties"
@@ -189,7 +189,7 @@
 			</button>
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${showMinutes == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${showMinutes == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (showMinutes = !showMinutes)}
 				aria-label="Wissel minuten"
 				title="Wissel minuten"
@@ -202,7 +202,7 @@
 			</button>
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${bgSetup.images.length > 0 ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${bgSetup.images.length > 0 ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (bgDialogOpen = !bgDialogOpen)}
 				aria-label="Wissel minuten"
 				title="Wissel minuten"

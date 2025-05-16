@@ -228,7 +228,7 @@
 			}
 		}
 
-		return bestSolution?.colors || blocks.map(() => 'dark:bg-gray-600 bg-gray-200');
+		return bestSolution?.colors || blocks.map(() => 'dark:bg-zinc-600 bg-zinc-200');
 	}
 
 	function getMinuteBlockColors() {
