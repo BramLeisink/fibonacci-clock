@@ -3,18 +3,27 @@
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
 	import {
 		Check,
+		ImageOff,
 		Lightbulb,
 		LightbulbOff,
 		Settings2,
 		Timer,
 		TimerOff,
 		Vibrate,
-		VibrateOff
+		VibrateOff,
+		Image,
+		X
 	} from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import type { Themes } from '$lib/types';
 	import { MediaQuery } from 'runed';
+
+	import { Switch } from '$lib/components/ui/switch';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
+	import { Slider } from '$lib/components/ui/slider';
+	import BgModal from './BgModal.svelte';
 
 	let {
 		colorTheme = $bindable(),
@@ -22,7 +31,8 @@
 		shapeTheme = $bindable(),
 		glow = $bindable(),
 		animate = $bindable(),
-		showMinutes = $bindable()
+		showMinutes = $bindable(),
+		bgSetup = $bindable()
 	}: {
 		colorTheme: keyof typeof themes;
 		themes: Themes;
@@ -30,12 +40,44 @@
 		glow: boolean;
 		animate: boolean;
 		showMinutes: boolean;
+		bgSetup: { images: any[]; delay: number };
 	} = $props();
+
+	let newImageUrl: string = $state('');
+	let fileInput: HTMLInputElement | null = $state(null);
+
+	function addImageUrl() {
+		if (newImageUrl) {
+			bgSetup.images = [...bgSetup.images, newImageUrl];
+			newImageUrl = '';
+		}
+	}
+
+	function removeImage(index: number) {
+		bgSetup.images = bgSetup.images.filter((_, i) => i !== index);
+	}
+
+	function handleFileUpload(event: Event) {
+		const target = event.target as HTMLInputElement;
+		if (target && target.files) {
+			const file = target.files[0];
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					if (e.target) {
+						bgSetup.images = [...bgSetup.images, (e.target as FileReader).result];
+					}
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+	}
 
 	// Utility to determine if a theme is selected
 	const isSelected = (key: string, current: string) => key === current;
 
 	let open = $state(false);
+	let bgDialogOpen = $state(false);
 	const isDesktop = new MediaQuery('(min-width: 768px)');
 </script>
 
@@ -48,7 +90,7 @@
 					onclick={() => (colorTheme = themeKey)}
 					aria-label={`Theme ${themeKey}`}
 					title={`Select theme ${themeKey}`}
-					style={`filter: ${isSelected(themeKey, colorTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+					style={`filter: ${isSelected(themeKey, colorTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				>
 					<div
 						class="row-span-2 h-full w-full rounded-bl-lg rounded-tl-lg"
@@ -78,7 +120,7 @@
 			<!-- Rounded -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-lg shadow-lg transition-all duration-300 `}
-				style={`background-color: ${themes[colorTheme].hour}; filter: ${isSelected('rounded', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].hour}; filter: ${isSelected('rounded', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'rounded')}
 				aria-label="Rounded Shape"
 				title="Select Rounded Shape"
@@ -91,7 +133,7 @@
 			<!-- Square -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].minute}; filter: ${isSelected('square', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].minute}; filter: ${isSelected('square', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'square')}
 				aria-label="Square Shape"
 				title="Select Square Shape"
@@ -104,7 +146,7 @@
 			<!-- Circle -->
 			<button
 				class={`relative flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition-all duration-300`}
-				style={`background-color: ${themes[colorTheme].both}; filter: ${isSelected('circle', shapeTheme) ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`background-color: ${themes[colorTheme].both}; filter: ${isSelected('circle', shapeTheme) ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (shapeTheme = 'circle')}
 				aria-label="Circle Shape"
 				title="Select Circle Shape"
@@ -117,11 +159,11 @@
 
 		<Separator class="my-6" />
 
-		<div class="grid grid-cols-3 gap-4">
+		<div class="grid grid-cols-4 gap-4">
 			<!-- Rounded -->
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${glow == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${glow == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (glow = !glow)}
 				aria-label="Gloei"
 				title="Schakel gloei"
@@ -134,7 +176,7 @@
 			</button>
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${animate == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${animate == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (animate = !animate)}
 				aria-label="Animaties"
 				title="Schakel animaties"
@@ -147,7 +189,7 @@
 			</button>
 			<button
 				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
-				style={`filter: ${showMinutes == true ? 'none' : 'grayscale(20%) brightness(50%)'};`}
+				style={`filter: ${showMinutes == true ? 'none' : 'zincscale(20%) brightness(50%)'};`}
 				onclick={() => (showMinutes = !showMinutes)}
 				aria-label="Wissel minuten"
 				title="Wissel minuten"
@@ -158,10 +200,23 @@
 					<TimerOff />
 				{/if}
 			</button>
+			<button
+				class={`animate-all relative flex h-16 w-16 items-center justify-center rounded-lg border bg-muted shadow-lg transition-all duration-300 `}
+				style={`filter: ${bgSetup.images.length > 0 ? 'none' : 'zincscale(20%) brightness(50%)'};`}
+				onclick={() => (bgDialogOpen = !bgDialogOpen)}
+				aria-label="Wissel minuten"
+				title="Wissel minuten"
+			>
+				{#if bgSetup.images.length > 0}
+					<Image />
+				{:else}
+					<ImageOff />
+				{/if}
+			</button>
 		</div>
 	</div>
 	<div class="w-full py-2 text-center text-muted-foreground">
-		<p class="text-sm">© 2025 Lucas Brouwer</p>
+		<p class="text-sm">© 2025 Bram Leisink</p>
 	</div>
 {/snippet}
 
@@ -196,3 +251,5 @@
 		</Drawer.Content>
 	</Drawer.Root>
 {/if}
+
+<BgModal bind:open={bgDialogOpen} bind:bgSetup />
